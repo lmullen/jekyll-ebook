@@ -58,17 +58,22 @@ class Article
   # formatting in the e-book, then print the content
   def format_article
 
-    "# " + self.metadata['title'] + "\n\n" +
-      "<p class='author'>" + self.metadata['author'] + "</p>" +"\n\n" +
-      "<p class='author-note'>" + self.metadata['author-note'] + "</p>" + "\n\n" +
+    # an array to hold all our output
+    @out = Array.new
 
-      # Only print the book reviewed if this is indeed a review
-      # if self.metadata['book-reviewed']
-      #   "<p class='book-reviewed'>" + self.metadata['book-reviewed'] + "</p>" +"\n\n" +
-      # end
+    @out.push "# " + self.metadata['title'] + "\n\n"
+    @out.push "<p class='author'>" + self.metadata['author'] + "</p>\n\n" 
+    @out.push "<p class='author-note'>" + self.metadata['author-note'] + "</p>\n\n" 
 
-      self.content
+    # Only print the book reviewed if it exists
+    if self.metadata['book-reviewed']
+      @out.push "<p class='book-reviewed'>" + self.metadata['book-reviewed'] + "</p>\n\n"
+    end
 
+    @out.push self.content
+
+    # Return the contents of the array
+    return @out.join("\n")
   end
 
 end
