@@ -3,7 +3,7 @@
 # Name::          EPUB Generator for Jekyll
 # Author::        Lincoln Mullen | lincoln@lincolnmullen.com
 # Copyright::     Copyright (c) 2012 Lincoln Mullen 
-# License::       MIT License
+# License::       MIT License | http://lmullen.mit-license.org/
 
 # A Ruby script to create EPUB books from Jekyll posts and pages using 
 # Pandoc. 
