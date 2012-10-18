@@ -95,7 +95,7 @@ class Ebook
       puts "YAML exception reading #{manifest}: #{e.message}"
     end
 
-    # TODO check manifest and write sensible defaults if they don't exist
+    # TODO check manifest and create sensible defaults if they don't exist
 
   end
 
@@ -103,21 +103,24 @@ class Ebook
   # content and the table of contents
   def generate_content
 
-    # Generate front matter here TODO
-
     # an array to hold all our output
     @out = Array.new
+
+    # Generate front matter as Pandoc title block
+    @out.push "% " + self.manifest['title']
+    @out.push "% " + self.manifest['issue']
+    @out.push "% " + self.manifest['date']
 
     # Loop through the sections in the manifest's list of contents
     self.manifest['contents'].each do |section|
 
-      @out.push "# " + section['section-title'] + "\n\n"
+      @out.push "<h1 class='section-title'>" + section['section-title'] + "</h1>\n\n"
 
       # Loop through the files in this section
       section['files'].each do |filename|
 
         # Create an Article object for each file and format it
-        article = Article.new( manifest['indir'] + filename )
+        article = Article.new( self.manifest['directory'] + filename )
         @out.push article.format_article
 
       end
@@ -133,7 +136,7 @@ class Ebook
   # and create an EPUB file from it, using the settings in the manifest.
   def generate_epub
 
-    @converter = PandocRuby.new( self.generate_content , {:f => :markdown, :to => :epub}, 'o' => manifest['epub-filename'] )
+    @converter = PandocRuby.new( self.generate_content , {:f => :markdown, :to => :epub}, 'smart', 'o' => self.manifest['outdir'] + self.manifest['epub-filename'], 'epub-cover-image' => self.manifest['epub-cover-image'], 'epub-metadata' => self.manifest['epub-metadata'], 'epub-stylesheet' => self.manifest['epub-stylesheet'],)
     @converter.convert
 
   end
