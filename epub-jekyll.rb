@@ -89,6 +89,9 @@ class Ebook
     rescue => e
       puts "YAML exception reading #{manifest}: #{e.message}"
     end
+
+    # TODO check manifest and write sensible defaults if they don't exist
+
   end
 
   # Loop through the contents in the manifest to generate the body 
@@ -119,7 +122,16 @@ class Ebook
 
   end
 
+  # Use PandocRuby to take the output of the `generate_content` method 
+  # and create an EPUB file from it, using the settings in the manifest.
+  def generate_epub
+
+    @converter = PandocRuby.new( "# This is a title", {:f => :markdown, :to => :epub}, :o => manifest['epub-filename'] )
+    @converter.convert
+
+  end
+
 end
 
 vol14 = Ebook.new("manifest.yml")
-vol14.generate_content
+vol14.generate_epub
