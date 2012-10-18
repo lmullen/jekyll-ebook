@@ -44,7 +44,7 @@ class Article
 
       end
     rescue => e
-      puts "YAML Exception reading #{filename}: #{e.message}"
+      puts "YAML exception reading #{filename}: #{e.message}"
     end
   end
 
@@ -73,12 +73,47 @@ class Article
 
 end
 
-# The Ebook class reads a YAML file that contains a list of Jekyll posts 
-# and pages to be included in the EPUB book. It then creates an article 
-# object for each file, writing the metadata to both a table of contents 
-# and a body file.
+# The Ebook class reads a YAML manifest file that contains a list of 
+# Jekyll posts and pages to be included in the EPUB book. It then 
+# creates an article object for each file, writing the metadata to both 
+# a table of contents and a body file.
 
 class Ebook
 
+  attr_accessor :manifest
+
+  # Initialize the object with the filename of the manifest
+  def initialize( manifest )
+    begin
+      @manifest = YAML.load(File.read(manifest))
+    rescue => e
+      puts "YAML exception reading #{manifest}: #{e.message}"
+    end
+  end
+
+  # Loop through the contents in the manifest to generate the body 
+  # content and the table of contents
+  def generate_content
+
+    # Generate front matter here TODO
+
+    # Loop through the sections in the manifest's list of contents
+    self.manifest['contents'].each do |section|
+
+      puts section['section-title']
+
+      # Loop through the files in this section
+      section['files'].each do |filename|
+
+        puts filename
+
+      end
+
+    end
+
+  end
 
 end
+
+vol14 = Ebook.new("manifest.yml")
+vol14.generate_content
