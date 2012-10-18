@@ -109,12 +109,12 @@ class Ebook
     # Generate front matter as Pandoc title block
     @out.push "% " + self.manifest['title']
     @out.push "% " + self.manifest['issue']
-    @out.push "% " + self.manifest['date']
+    @out.push "% " + self.manifest['date'] + "\n"
 
     # Loop through the sections in the manifest's list of contents
     self.manifest['contents'].each do |section|
 
-      @out.push "<h1 class='section-title'>" + section['section-title'] + "</h1>\n\n"
+      @out.push "# " + section['section-title'] + "\n\n"
 
       # Loop through the files in this section
       section['files'].each do |filename|
@@ -143,5 +143,5 @@ class Ebook
 
 end
 
-vol14 = Ebook.new("manifest.yml")
-puts vol14.generate_epub
+# Generate an EPUB from the manifest passed as a command line argument
+Ebook.new(ARGV[0]).generate_epub
