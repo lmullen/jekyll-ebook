@@ -48,12 +48,6 @@ class Article
     end
   end
 
-  # Print the filename and metadata as a string representation of an 
-  # Article object
-  def to_s
-    self.filename + "\n" + self.metadata.to_s
-  end
-
   # Print the relevant metadata in a block with CSS selectors for 
   # formatting in the e-book, then print the content
   def format_article
@@ -62,25 +56,19 @@ class Article
     # manifest (probably passed to this class as an array)
 
     # an array to hold all our output
-    @out = Array.new
+    out = Array.new
 
-    @out.push "# " + self.metadata['title'] + "\n\n"
-    @out.push "<p class='author'>" + self.metadata['author'] + "</p>\n\n" 
+    out.push "# " + self.metadata['title'] + "\n\n"
 
-    # Only print the author note if it exists
-    if self.metadata['author-note']
-      @out.push "<p class='author-note'>" + self.metadata['author-note'] + "</p>\n\n" 
-    end
+    # Only print these metadata fields if they exist
+    out.push "<p class='author'>" + self.metadata['author'] + "</p>\n\n" unless self.metadata['author'].nil?
+    out.push "<p class='author-note'>" + self.metadata['author-note'] + "</p>\n\n" unless self.metadata['author-note'].nil?
+    out.push "<p class='book-reviewed'>" + self.metadata['book-reviewed'] + "</p>\n\n" unless self.metadata['book-reviewed'].nil?
 
-    # Only print the book reviewed if it exists
-    if self.metadata['book-reviewed']
-      @out.push "<p class='book-reviewed'>" + self.metadata['book-reviewed'] + "</p>\n\n"
-    end
-
-    @out.push self.content
+    out.push self.content
 
     # Return the contents of the array
-    return @out.join("\n")
+    return out.join("\n")
   end
 
 end
@@ -112,31 +100,31 @@ class Ebook
   def generate_content
 
     # an array to hold all our output
-    @out = Array.new
+    out = Array.new
 
     # Generate front matter as Pandoc title block
-    @out.push "% " + self.manifest['title']
-    @out.push "% " + self.manifest['author']
-    @out.push "% " + self.manifest['date'] + "\n"
+    out.push "% " + self.manifest['title']
+    out.push "% " + self.manifest['author']
+    out.push "% " + self.manifest['date'] + "\n" unless self.manifest['date'].nil?
 
     # Loop through the sections in the manifest's list of contents
     self.manifest['contents'].each do |section|
 
-      @out.push "# " + section['section-title'] + "\n\n"
+      out.push "# " + section['section-title'] + "\n\n"
 
       # Loop through the files in this section
       section['files'].each do |filename|
 
         # Create an Article object for each file and format it
         article = Article.new( self.manifest['indir'] + filename )
-        @out.push article.format_article
+        out.push article.format_article
 
       end
 
     end
 
     # Return the contents of the array
-    return @out.join("\n")
+    return out.join("\n")
 
   end
 
