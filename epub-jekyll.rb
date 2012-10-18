@@ -56,18 +56,18 @@ class Article
 
   # Print the relevant metadata in a block with CSS selectors for 
   # formatting in the e-book, then print the content
-  def format
+  def format_article
 
-    puts "# " + self.metadata['title'] + "\n\n"
-    puts "<p class='author'>" + self.metadata['author'] + "</p>" +"\n\n"
-    puts "<p class='author-note'>" + self.metadata['author-note'] + "</p>" +"\n\n"
+    "# " + self.metadata['title'] + "\n\n" +
+      "<p class='author'>" + self.metadata['author'] + "</p>" +"\n\n" +
+      "<p class='author-note'>" + self.metadata['author-note'] + "</p>" + "\n\n" +
 
-    # Only print the book reviewed if this is indeed a review
-    if self.metadata['book-reviewed']
-      puts "<p class='book-reviewed'>" + self.metadata['book-reviewed'] + "</p>" +"\n\n"
-    end
+      # Only print the book reviewed if this is indeed a review
+      # if self.metadata['book-reviewed']
+      #   "<p class='book-reviewed'>" + self.metadata['book-reviewed'] + "</p>" +"\n\n" +
+      # end
 
-    puts self.content
+      self.content
 
   end
 
@@ -97,15 +97,21 @@ class Ebook
 
     # Generate front matter here TODO
 
-    # Loop through the sections in the manifest's list of contents
-    self.manifest['contents'].each do |section|
+    File.open(manifest['outdir'] + 'body.markdown', 'w') do |f|
 
-      puts section['section-title']
+      # Loop through the sections in the manifest's list of contents
+      self.manifest['contents'].each do |section|
 
-      # Loop through the files in this section
-      section['files'].each do |filename|
+        f.puts "# " + section['section-title'] + "\n\n"
 
-        puts filename
+        # Loop through the files in this section
+        section['files'].each do |filename|
+
+          # Create an Article object for each file and format it
+          article = Article.new( manifest['indir'] + filename )
+          f.puts article.format_article
+
+        end
 
       end
 
