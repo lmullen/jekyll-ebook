@@ -58,6 +58,9 @@ class Article
   # formatting in the e-book, then print the content
   def format_article
 
+    # TODO only print the metadata items specifically named in the 
+    # manifest (probably passed to this class as an array)
+
     # an array to hold all our output
     @out = Array.new
 
@@ -93,6 +96,7 @@ class Ebook
 
   # Initialize the object with the filename of the manifest
   def initialize( manifest )
+
     begin
       @manifest = YAML.load(File.read(manifest))
     rescue => e
@@ -140,8 +144,12 @@ class Ebook
   # and create an EPUB file from it, using the settings in the manifest.
   def generate_epub
 
-    @converter = PandocRuby.new( self.generate_content , {:f => :markdown, :to => :epub}, 'smart', 'o' => self.manifest['epub-filename'], 'epub-cover-image' => self.manifest['epub-cover-image'], 'epub-metadata' => self.manifest['epub-metadata'], 'epub-stylesheet' => self.manifest['epub-stylesheet'],)
-    @converter.convert
+    PandocRuby.new( self.generate_content ,
+                   {:f => :markdown, :to => :epub},
+                   'smart', 'o' => self.manifest['epub-filename'],
+                   'epub-cover-image' => self.manifest['epub-cover-image'],
+                   'epub-metadata' => self.manifest['epub-metadata'], 
+                   'epub-stylesheet' => self.manifest['epub-stylesheet'],).convert
 
   end
 
