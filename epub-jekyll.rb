@@ -63,7 +63,11 @@ class Article
 
     @out.push "# " + self.metadata['title'] + "\n\n"
     @out.push "<p class='author'>" + self.metadata['author'] + "</p>\n\n" 
-    @out.push "<p class='author-note'>" + self.metadata['author-note'] + "</p>\n\n" 
+
+    # Only print the author note if it exists
+    if self.metadata['author-note']
+      @out.push "<p class='author-note'>" + self.metadata['author-note'] + "</p>\n\n" 
+    end
 
     # Only print the book reviewed if it exists
     if self.metadata['book-reviewed']
@@ -108,7 +112,7 @@ class Ebook
 
     # Generate front matter as Pandoc title block
     @out.push "% " + self.manifest['title']
-    @out.push "% " + self.manifest['issue']
+    @out.push "% " + self.manifest['author']
     @out.push "% " + self.manifest['date'] + "\n"
 
     # Loop through the sections in the manifest's list of contents
@@ -120,7 +124,7 @@ class Ebook
       section['files'].each do |filename|
 
         # Create an Article object for each file and format it
-        article = Article.new( self.manifest['directory'] + filename )
+        article = Article.new( self.manifest['indir'] + filename )
         @out.push article.format_article
 
       end
