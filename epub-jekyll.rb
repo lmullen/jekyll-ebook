@@ -100,25 +100,27 @@ class Ebook
 
     # Generate front matter here TODO
 
-    File.open(manifest['outdir'] + 'body.markdown', 'w') do |f|
+    # an array to hold all our output
+    @out = Array.new
 
-      # Loop through the sections in the manifest's list of contents
-      self.manifest['contents'].each do |section|
+    # Loop through the sections in the manifest's list of contents
+    self.manifest['contents'].each do |section|
 
-        f.puts "# " + section['section-title'] + "\n\n"
+      @out.push "# " + section['section-title'] + "\n\n"
 
-        # Loop through the files in this section
-        section['files'].each do |filename|
+      # Loop through the files in this section
+      section['files'].each do |filename|
 
-          # Create an Article object for each file and format it
-          article = Article.new( manifest['indir'] + filename )
-          f.puts article.format_article
-
-        end
+        # Create an Article object for each file and format it
+        article = Article.new( manifest['indir'] + filename )
+        @out.push article.format_article
 
       end
 
     end
+
+    # Return the contents of the array
+    return @out.join("\n")
 
   end
 
@@ -126,7 +128,7 @@ class Ebook
   # and create an EPUB file from it, using the settings in the manifest.
   def generate_epub
 
-    @converter = PandocRuby.new( "# This is a title", {:f => :markdown, :to => :epub}, :o => manifest['epub-filename'] )
+    @converter = PandocRuby.new( self.generate_content , {:f => :markdown, :to => :epub}, 'o' => manifest['epub-filename'] )
     @converter.convert
 
   end
@@ -134,4 +136,4 @@ class Ebook
 end
 
 vol14 = Ebook.new("manifest.yml")
-vol14.generate_epub
+puts vol14.generate_epub
