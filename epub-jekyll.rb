@@ -140,7 +140,7 @@ class Ebook
   # and create an EPUB file from it, using the settings in the manifest.
   def generate_epub
 
-    @converter = PandocRuby.new( self.generate_content , {:f => :markdown, :to => :epub}, 'smart', 'o' => self.manifest['outdir'] + self.manifest['epub-filename'], 'epub-cover-image' => self.manifest['epub-cover-image'], 'epub-metadata' => self.manifest['epub-metadata'], 'epub-stylesheet' => self.manifest['epub-stylesheet'],)
+    @converter = PandocRuby.new( self.generate_content , {:f => :markdown, :to => :epub}, 'smart', 'o' => self.manifest['epub-filename'], 'epub-cover-image' => self.manifest['epub-cover-image'], 'epub-metadata' => self.manifest['epub-metadata'], 'epub-stylesheet' => self.manifest['epub-stylesheet'],)
     @converter.convert
 
   end
