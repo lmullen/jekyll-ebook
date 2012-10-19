@@ -89,8 +89,6 @@ class Ebook
       puts "YAML exception reading #{manifest}: #{e.message}"
     end
 
-    # TODO check manifest and create sensible defaults if they don't exist
-
   end
 
   # Loop through the contents in the manifest to generate the body 
