@@ -10,7 +10,7 @@ Lincoln Mullen | lincoln@lincolnmullen.com | http://lincolnmullen.com
 The script `epub-jekyll.rb` should go in the root of your Jekyll site.
 You'll want to make it executable with the command
 `chmod +x  epub-jekyll.rb`. You will also have to install the gem
-[pandoc-ruby][] with the command `gem install pandoc-ruby`, and you will 
+[pandoc-ruby][] with the command `gem install pandoc-ruby`, and you will
 need to have the [Pandoc][] executable in your path.
 
 You can run the script from the command line. It takes one argument, the
@@ -61,18 +61,18 @@ Pandoc][].
     - author-note
     - citation
 
-The YAML metadata for your posts and pages contains information that you 
-probably don't want in your e-book, such as the categories or permalink.  
-Your YAML metadata might also include custom fields that you do want to 
-include. In my case, I often have a field `book-reviewed` that should be 
+The YAML metadata for your posts and pages contains information that you
+probably don't want in your e-book, such as the categories or permalink.
+Your YAML metadata might also include custom fields that you do want to
+include. In my case, I often have a field `book-reviewed` that should be
 included.
 
-Your manifest should specify an array of `header-items` that you want to 
-include in the order that you want to include them. The `title` is 
-always included as the first item, whether or not you specify it. The 
-other items are included only if they exist for a given post or page.  
-They items are each wrapped in a `<p>` tag with a class named after the 
-metadata item (e.g., `<p class='book-reviewed'>`), so you can change the 
+Your manifest should specify an array of `header-items` that you want to
+include in the order that you want to include them. The `title` is
+always included as the first item, whether or not you specify it. The
+other items are included only if they exist for a given post or page.
+The items are each wrapped in a `<p>` tag with a class named after the
+metadata item (e.g., `<p class='book-reviewed'>`), so you can change the
 styles with your stylesheet.
 
 ### Body Content
@@ -102,12 +102,12 @@ You can have as many sections and included files as you wish.
 
 ## Caveats
 
-This code is alpha. If you find bugs or ways to improve the code, please 
+This code is alpha. If you find bugs or ways to improve the code, please
 let me know in the GitHub issues tracker or by e-mail.
 
 I wrote this script for the [*Journal of Southern Religion*][], which
-[runs on Jekyll][]. There may be items in this script which are specific 
-to my intended purpose, but I have tried make the script generally 
+[runs on Jekyll][]. There may be items in this script which are specific
+to my intended purpose, but I have tried make the script generally
 useful.
 
   [Ruby]: http://www.ruby-lang.org/
