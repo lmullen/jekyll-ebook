@@ -18,57 +18,55 @@ require 'pandoc-ruby'
 
 class Article
 
-  attr_accessor :filename, :metadata, :content
+  attr_accessor :filename, :metadata, :content, :required_fields
 
-  # Retrieve the filename then call the method to read its data
-  def initialize( filename )
+  # Retrieve the filename then call the method to read its data. Pass 
+  # required_fields along but delete 'title' since we're going to print 
+  # it regardless.
+  def initialize( filename, required_fields )
+    @required_fields = required_fields.delete_if { |f| f == "title" }
     @filename = filename
     self.read_file
   end
 
-  # Read the metadata and content from the post or page
+  # Read the metadata and content from the Jekyll post or page
   def read_file
 
-    # Load the Jekyll post or page
     self.content = File.read(@filename)
 
+    # Define a regular expression to find the YAML header Use the back 
+    # reference to load the metadata and the postmatch to load the 
+    # content.
     begin
-
-      # define a regular expression to find the YAML header 
       if /^(---\s*\n.*?\n?)^(---\s*$\n?)/m.match(self.content)
-
-        # Use the back reference to load the metadata and the postmatch 
-        # to load the content
         self.metadata = YAML.load($1)
         self.content = $'
-
       end
     rescue => e
       puts "YAML exception reading #{filename}: #{e.message}"
     end
+
   end
 
   # Print the relevant metadata in a block with CSS selectors for 
   # formatting in the e-book, then print the content
   def format_article
 
-    # TODO only print the metadata items specifically named in the 
-    # manifest (probably passed to this class as an array)
-
     # an array to hold all our output
     out = Array.new
 
     out.push "# " + self.metadata['title'] + "\n\n"
 
-    # Only print these metadata fields if they exist
-    out.push "<p class='author'>" + self.metadata['author'] + "</p>\n\n" unless self.metadata['author'].nil?
-    out.push "<p class='author-note'>" + self.metadata['author-note'] + "</p>\n\n" unless self.metadata['author-note'].nil?
-    out.push "<p class='book-reviewed'>" + self.metadata['book-reviewed'] + "</p>\n\n" unless self.metadata['book-reviewed'].nil?
+    # Loop through the required fields, printing them if they exist
+    self.required_fields.each do |f|
+      out.push "<p class='#{f}'>" + self.metadata[f] + "</p>\n\n" unless self.metadata[f].nil?
+    end
 
     out.push self.content
 
     # Return the contents of the array
     return out.join("\n")
+
   end
 
 end
@@ -112,13 +110,11 @@ class Ebook
 
       out.push "# " + section['section-title'] + "\n\n"
 
-      # Loop through the files in this section
+      # Loop through the files in this section. Create an Article object 
+      # for each file, to which we pass the directory plus filename and 
+      # the list of required metadata items.
       section['files'].each do |filename|
-
-        # Create an Article object for each file and format it
-        article = Article.new( self.manifest['indir'] + filename )
-        out.push article.format_article
-
+        out.push Article.new( self.manifest['indir'] + filename , self.manifest['header-items'] ).format_article
       end
 
     end

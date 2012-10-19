@@ -10,7 +10,8 @@ Lincoln Mullen | lincoln@lincolnmullen.com | http://lincolnmullen.com
 The script `epub-jekyll.rb` should go in the root of your Jekyll site.
 You'll want to make it executable with the command
 `chmod +x  epub-jekyll.rb`. You will also have to install the gem
-[pandoc-ruby][] with the command `gem install pandoc-ruby`.
+[pandoc-ruby][] with the command `gem install pandoc-ruby`, and you will 
+need to have the [Pandoc][] executable in your path.
 
 You can run the script from the command line. It takes one argument, the
 name of a [YAML][] manifest file. To run the script:
@@ -21,7 +22,7 @@ name of a [YAML][] manifest file. To run the script:
 
 The manifest is a [YAML][] file that sets some options tells the script
 which posts and pages should be part of the [EPUB][]. (If you're using
-[Jekyll][], you're familiar with [YAML][] already.)
+[Jekyll][], you're already familiar with [YAML][].)
 
 The following fields should be in the manifest.
 
@@ -52,6 +53,28 @@ file, and an XML file respectively. To see what belongs in each of those
 files, see John MacFarlane's [guide to creating an e-book with
 Pandoc][].
 
+### Header Items
+
+    header-items:
+    - title
+    - author
+    - author-note
+    - citation
+
+The YAML metadata for your posts and pages contains information that you 
+probably don't want in your e-book, such as the categories or permalink.  
+Your YAML metadata might also include custom fields that you do want to 
+include. In my case, I often have a field `book-reviewed` that should be 
+included.
+
+Your manifest should specify an array of `header-items` that you want to 
+include in the order that you want to include them. The `title` is 
+always included as the first item, whether or not you specify it. The 
+other items are included only if they exist for a given post or page.  
+They items are each wrapped in a `<p>` tag with a class named after the 
+metadata item (e.g., `<p class='book-reviewed'>`), so you can change the 
+styles with your stylesheet.
+
 ### Body Content
 
     indir: ./
@@ -79,15 +102,13 @@ You can have as many sections and included files as you wish.
 
 ## Caveats
 
-This code is definitely alpha. If you find bugs or ways to improve the 
-code, please let me know in the GitHub issues tracker or by e-mail.
+This code is alpha. If you find bugs or ways to improve the code, please 
+let me know in the GitHub issues tracker or by e-mail.
 
 I wrote this script for the [*Journal of Southern Religion*][], which
-[runs on Jekyll][]. The script is not sufficiently abstracted to be used
-on any Jekyll site, but you can modify it to suit your purposes. For
-example, I have options for including author note's and the
-bibliographic information of books reviewed, which are probably not
-typical use cases.
+[runs on Jekyll][]. There may be items in this script which are specific 
+to my intended purpose, but I have tried make the script generally 
+useful.
 
   [Ruby]: http://www.ruby-lang.org/
   [EPUB]: http://idpf.org/epub
