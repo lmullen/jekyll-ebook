@@ -137,5 +137,5 @@ class Ebook
 
 end
 
-# Generate an EPUB from the manifest passed as a command line argument
-Ebook.new(ARGV[0]).generate_epub
+# Generate an EPUB from manifests passed as a command line arguments
+ARGV.each { |m| Ebook.new(m).generate_epub }
