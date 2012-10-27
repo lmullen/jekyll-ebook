@@ -112,7 +112,7 @@ class Ebook
       # for each file, to which we pass the directory plus filename and 
       # the list of required metadata items.
       section['files'].each do |filename|
-        out.push Article.new( self.manifest['indir'] + filename , self.manifest['header-items'] ).format_article
+        out.push Article.new( self.manifest['content-dir'] + filename , self.manifest['header-items'] ).format_article
       end
 
     end
@@ -126,6 +126,7 @@ class Ebook
   # and create an EPUB file from it, using the settings in the manifest.
   def generate_epub
 
+    Dir.chdir(self.manifest['epub-dir'])
     PandocRuby.new( self.generate_content ,
                    {:f => :markdown, :to => :epub},
                    'smart', 'o' => self.manifest['epub-filename'],

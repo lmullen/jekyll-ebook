@@ -40,18 +40,20 @@ The `title`, `author`, and `date` of your EPUB are set in the manifest.
     epub-cover-image: cover.jpg
     epub-stylesheet: stylesheet.css
     epub-metadata: metadata.xml
+    epub-dir: /Users/username/project/
 
 The `epub-filename` is the path to the EPUB file that the script will
 output. (NB: For now, if the directories in the path do not exist, the
 script will fail.)
 
-Besides the body content, a proper, well-formatted EPUB requires a
-stylesheet, a cover image, and a rights file. This script uses
-`pandoc-ruby` to call for three files. `epub-cover-image`,
-`epub-stylesheet`, and `epub-metadata` are paths to an image, a CSS
-file, and an XML file respectively. To see what belongs in each of those
-files, see John MacFarlane's [guide to creating an e-book with
-Pandoc][].
+Besides the body content, a proper, well-formatted EPUB requires a 
+stylesheet, a cover image, and a rights file. This script uses 
+`pandoc-ruby` to call for three files. `epub-cover-image`, 
+`epub-stylesheet`, and `epub-metadata` are paths to an image, a CSS 
+file, and an XML file respectively. These paths are relative to 
+`epub-dir`, so that you can specify the directory that holds these files 
+one time. To see what belongs in each of those files, see John 
+MacFarlane's [guide to creating an e-book with Pandoc][]. 
 
 ### Header Items
 
@@ -77,7 +79,7 @@ styles with your stylesheet.
 
 ### Body Content
 
-    indir: ./
+    content-dir: ./
     contents: 
       - section-title: Articles
         files:
@@ -90,8 +92,8 @@ styles with your stylesheet.
 This script loops through the files you want included in the EPUB in the
 order you specify, formatting them properly.
 
-The `indir` option sets the path to your Jekyll posts and pages. You
-might set `indir` to the path to your `_posts` directory.
+The `content-dir` option sets the path to your Jekyll posts and pages. You
+might set `content-dir` to the path to your `_posts` directory.
 
 The `contents` option lists the files you want to include, organized by
 section. The `section-title`s will create header pages separating the
