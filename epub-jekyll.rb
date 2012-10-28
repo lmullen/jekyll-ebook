@@ -106,7 +106,8 @@ class Ebook
     # Loop through the sections in the manifest's list of contents
     self.manifest['contents'].each do |section|
 
-      out.push "# " + section['section-title'] + "\n\n"
+      out.push "# " + section['section-title'] + "\n<hr/>\n"
+
 
       # Loop through the files in this section. Create an Article object 
       # for each file, to which we pass the directory plus filename and 
