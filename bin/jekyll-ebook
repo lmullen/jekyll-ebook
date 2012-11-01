@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+# For use/testing when no gem is installed
+$:.unshift File.join(File.dirname(__FILE__), *%w[.. lib]) 
+
+require 'jekyll-ebook'
+
+# Generate an EPUB from manifests passed as command line arguments
+ARGV.each { |m| Ebook.new(m).generate_epub }
