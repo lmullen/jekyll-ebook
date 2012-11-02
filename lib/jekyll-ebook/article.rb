@@ -5,6 +5,10 @@
 
 class Article
 
+  # +filename+ is the name of the Jekyll post or page
+  # +metadata+ is the metadata read in from the post or page
+  # +content+ is the body of the post or page
+  # +required_fields+ is the list of metadata items to include
   attr_accessor :filename, :metadata, :content, :required_fields
 
   # Retrieve the filename then call the method to read its data. Pass 

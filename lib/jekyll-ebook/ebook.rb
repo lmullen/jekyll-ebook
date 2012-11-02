@@ -5,6 +5,7 @@
 
 class Ebook
 
+  # +manifest+ is the filename of the YAML manifest 
   attr_accessor :manifest
 
   # Initialize the object with the filename of the manifest
