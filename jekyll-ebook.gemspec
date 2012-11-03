@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name          = 'jekyll-ebook'
-  s.version       = '0.0.1'
-  s.date          = '2012-11-01'
+  s.version       = '0.0.2'
+  s.date          = '2012-11-03'
   s.summary       = 'EPUB generator for Jekyll'
   s.description   = 'A gem to generate an EPUB e-book from Jekyll posts and pages'
   s.author        = 'Lincoln A. Mullen'
@@ -13,4 +13,5 @@ Gem::Specification.new do |s|
   s.bindir        = 'bin'
   s.executables   << 'jekyll-ebook'
   s.license       = 'MIT'
+  s.add_runtime_dependency('pandoc-ruby', ['~>0.6.0'])
 end
