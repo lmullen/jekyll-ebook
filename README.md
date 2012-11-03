@@ -1,22 +1,29 @@
-# EPUB Generator for Jekyll
+# Jekyll E-book
 
-A [Ruby][] script to create [EPUB][] books from [Jekyll][] posts and
+A [Ruby][] script/gem to create [EPUB][] books from [Jekyll][] posts and
 pages using [Pandoc][].
 
-Lincoln Mullen | lincoln@lincolnmullen.com | http://lincolnmullen.com
+Lincoln A. Mullen | lincoln@lincolnmullen.com | http://lincolnmullen.com
 
 ## Usage
 
-The script `epub-jekyll.rb` should go in the root of your Jekyll site.
-You'll want to make it executable with the command
-`chmod +x  epub-jekyll.rb`. You will also have to install the gem
-[pandoc-ruby][] with the command `gem install pandoc-ruby`, and you will
-need to have the [Pandoc][] executable in your path.
+You can install jekyll-ebook using RubyGems:
 
-You can run the script from the command line. It takes one argument, the
-name of a [YAML][] manifest file. To run the script:
+    gem install jekyll-ebook
 
-    ./epub-jekyll.rb manifest.yml
+This gem depends on pandoc-ruby, which should be installed for you
+automatically when you install jekyll-ebook. If not:
+
+    gem install pandoc-ruby
+
+If you don't have it installed already you will need to have the
+[Pandoc][] executable in your path. See the [Pandoc][] documentation for
+instructions.
+
+You can run the script from the command line. It takes as arguments, the
+filenames of [YAML][] manifest files, one per e-book. To run the script:
+
+    jekyll-ebook manifest.yml
 
 ## The Manifest
 
@@ -46,14 +53,14 @@ The `epub-filename` is the path to the EPUB file that the script will
 output. (NB: For now, if the directories in the path do not exist, the
 script will fail.)
 
-Besides the body content, a proper, well-formatted EPUB requires a 
-stylesheet, a cover image, and a rights file. This script uses 
-`pandoc-ruby` to call for three files. `epub-cover-image`, 
-`epub-stylesheet`, and `epub-metadata` are paths to an image, a CSS 
-file, and an XML file respectively. These paths are relative to 
-`epub-dir`, so that you can specify the directory that holds these files 
-one time. To see what belongs in each of those files, see John 
-MacFarlane's [guide to creating an e-book with Pandoc][]. 
+Besides the body content, a proper, well-formatted EPUB requires a
+stylesheet, a cover image, and a rights file. This script uses
+`pandoc-ruby` to call for three files. `epub-cover-image`,
+`epub-stylesheet`, and `epub-metadata` are paths to an image, a CSS
+file, and an XML file respectively. These paths are relative to
+`epub-dir`, so that you can specify the directory that holds these files
+one time. To see what belongs in each of those files, see John
+MacFarlane's [guide to creating an e-book with Pandoc][].
 
 ### Header Items
 
@@ -92,8 +99,8 @@ styles with your stylesheet.
 This script loops through the files you want included in the EPUB in the
 order you specify, formatting them properly.
 
-The `content-dir` option sets the path to your Jekyll posts and pages. You
-might set `content-dir` to the path to your `_posts` directory.
+The `content-dir` option sets the path to your Jekyll posts and pages.
+You might set `content-dir` to the path to your `_posts` directory.
 
 The `contents` option lists the files you want to include, organized by
 section. The `section-title`s will create header pages separating the
@@ -116,7 +123,6 @@ useful.
   [EPUB]: http://idpf.org/epub
   [Jekyll]: http://jekyllrb.com/
   [Pandoc]: http://johnmacfarlane.net/pandoc/
-  [pandoc-ruby]: https://github.com/alphabetum/pandoc-ruby
   [YAML]: http://www.yaml.org/
   [guide to creating an e-book with Pandoc]: http://johnmacfarlane.net/pandoc/epub.html
   [*Journal of Southern Religion*]: http://jsr.fsu.edu
